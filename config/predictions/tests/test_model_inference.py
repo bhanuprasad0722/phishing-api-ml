@@ -1,7 +1,7 @@
 import joblib
 from ml.feature_extraction import extract_features
 
-MODEL_PATH = "ml/artifacts/random_forest_model.pkl"
+MODEL_PATH = "config/ml/artifacts/random_forest_model.pkl"
 
 
 def test_model_loads():
