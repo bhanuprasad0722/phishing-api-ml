@@ -21,10 +21,10 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY . .
 
 # Set Django settings
-ENV DJANGO_SETTINGS_MODULE=config.settings
+ENV DJANGO_SETTINGS_MODULE=config.config.settings
 
 # Expose port
 EXPOSE 8000
 
 # Run server
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "config.config.wsgi:application", "--bind", "0.0.0.0:8000"]
