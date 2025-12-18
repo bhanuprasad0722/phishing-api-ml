@@ -30,3 +30,4 @@ Thumbs.db
 
 # Node (chrome extension later)
 node_modules/
+*.docx
