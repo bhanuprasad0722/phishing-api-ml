@@ -11,7 +11,6 @@ class TestPredictionAPI:
     @pytest.fixture
     def api_client(self):
         return APIClient()
-
     @pytest.fixture
     def user(self):
         return User.objects.create_user(
