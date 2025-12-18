@@ -34,7 +34,7 @@ class TestPredictionAPI:
         response = auth_client.post(url, {})
         assert response.status_code == 400
 
-    @patch("predictions.ml_model.predict")
+    @patch("predictions.views.predict")
     def test_valid_prediction(self, mock_predict, auth_client):
         mock_predict.return_value = ("phishing", 0.91)
 
