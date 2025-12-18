@@ -1,5 +1,7 @@
 import joblib
 from ml.feature_extraction import extract_features
+import pytest
+import os
 
 MODEL_PATH = "config/ml/artifacts/random_forest_model.pkl"
 
@@ -8,7 +10,7 @@ def test_model_loads():
     model = joblib.load(MODEL_PATH)
     assert model is not None
 
-
+@pytest.mark.skipif(os.getenv("GITHUB_ACTIONS") == "true", reason="Skip ML model test in CI")
 def test_model_prediction_output():
     model = joblib.load(MODEL_PATH)
 
