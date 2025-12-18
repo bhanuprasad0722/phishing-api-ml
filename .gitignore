@@ -1,0 +1,32 @@
+# Virtual environments
+apienv/
+venv/
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Django
+db.sqlite3
+*.log
+staticfiles/
+
+# ML artifacts
+*.pkl
+ml/artifacts/
+
+# Tests
+.pytest_cache/
+.coverage
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (chrome extension later)
+node_modules/
