@@ -35,7 +35,7 @@ jobs:
     # 5. Run tests
     - name: Run tests
       working-directory: config
-      run: pytest
+      run: pytest -m "not slow"
 
     # 6. Login to Docker Hub (ONLY on push to main/master)
     - name: Login to Docker Hub

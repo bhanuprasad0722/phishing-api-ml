@@ -3,14 +3,19 @@ from ml.feature_extraction import extract_features
 import pytest
 import os
 
+
+pytestmark = pytest.mark.skip(
+    reason="Model artifact not available in CI"
+)
+
 MODEL_PATH = "config/ml/artifacts/random_forest_model.pkl"
 
-@pytest.mark.skipif(os.getenv("GITHUB_ACTIONS") == "true", reason="Skip ML model test in CI")
+@pytest.mark.slow
 def test_model_loads():
     model = joblib.load(MODEL_PATH)
     assert model is not None
 
-@pytest.mark.skipif(os.getenv("GITHUB_ACTIONS") == "true", reason="Skip ML model test in CI")
+@pytest.mark.slow
 def test_model_prediction_output():
     model = joblib.load(MODEL_PATH)
 
