@@ -15,40 +15,42 @@ SUSPICIOUS_TLDS = [
 
 
 def extract_features(url: str):
-    """
-    Always returns a fixed-length numeric feature vector (14 features)
-    """
-
-    if not url or not isinstance(url, str):
-        return [0] * 14
-
-    # Ensure scheme exists (VERY IMPORTANT)
-    if not url.startswith(("http://", "https://")):
-        url = "http://" + url
-
     parsed = urlparse(url)
-    domain = parsed.netloc.lower()
+    domain = parsed.netloc
     path = parsed.path
     query = parsed.query
 
-    features = [
-        len(url),                                     # 0 url length
-        url.count("."),                               # 1 number of dots
-        len(re.findall(r"\d", url)),                  # 2 number of digits
-        domain.count("-"),                            # 3 hyphens in domain
-        len(re.findall(r"[/&?=]", url)),              # 4 special characters
-        1 if "@" in url else 0,                       # 5 @ symbol
-        1 if parsed.scheme == "https" else 0,         # 6 https used
-        max(domain.count(".") - 1, 0),                # 7 subdomains
-        len(domain),                                  # 8 domain length
-        1 if re.fullmatch(r"\d{1,3}(\.\d{1,3}){3}", domain) else 0,  # 9 IP usage
-        1 if any(domain.endswith(tld) for tld in SUSPICIOUS_TLDS) else 0,  # 10 TLD
-        sum(k in url.lower() for k in SUSPICIOUS_KEY_WORDS),  # 11 keywords
-        1 if any(s in domain for s in SHORTENING_SERVICES) else 0,  # 12 shortener
-        len(query.split("&")) if query else 0          # 13 query params
-    ]
+    # Fix: add http scheme if missing
+    if not domain:
+        if url.startswith("http://") or url.startswith("https://"):
+            domain = parsed.netloc
+        else:
+            url = "http://" + url
+            parsed = urlparse(url)
+            domain = parsed.netloc
 
+    # If still empty, raise error
+    if not domain:
+        raise ValueError(f"Cannot extract domain from URL: {url}")
+
+    features = [
+        len(url),  # length
+        url.count("."),  # num of dots
+        len(re.findall(r'\d', url)),  # num of digits
+        domain.count("-"),  # num of - in domain
+        len(re.findall(r"[/&?=]", url)),  # num of special characters
+        1 if "@" in url else 0,  # presence of @ 
+        1 if parsed.scheme == "https" else 0,  # https used or not
+        domain.count(".") - 1 if domain.count(".") > 0 else 0,  # num of subdomain
+        len(domain),
+        1 if re.fullmatch(r"\d{1,3}(\.\d{1,3}){3}", domain) else 0,  # IP address usage instead of domain
+        1 if any(domain.endswith(tld) for tld in SUSPICIOUS_TLDS) else 0,  # suspicious TLD
+        sum(keyword in url.lower() for keyword in SUSPICIOUS_KEY_WORDS),  # suspicious keywords
+        1 if any(service in domain for service in SHORTENING_SERVICES) else 0,  # URL shortener
+        len(query.split("&")) if query else 0,  # num of query params
+    ]
     return features
+
 
 
 FEATURE_NAMES = [
