@@ -3,9 +3,7 @@ import joblib
 from django.conf import settings
 from ml.feature_extraction import extract_features
 
-# IMPORTANT:
-# settings.BASE_DIR -> /opt/render/project/src/config
-# We need repo root -> /opt/render/project/src
+# Repo root (/opt/render/project/src)
 BASE_DIR = settings.BASE_DIR.parent
 
 MODEL_PATH = os.path.join(
@@ -15,7 +13,7 @@ MODEL_PATH = os.path.join(
     "random_forest_model.pkl"
 )
 
-_model = None  # cached model instance
+_model = None
 
 
 def get_model():
@@ -23,9 +21,7 @@ def get_model():
 
     if _model is None:
         if not os.path.exists(MODEL_PATH):
-            raise FileNotFoundError(
-                f"ML model not found at: {MODEL_PATH}"
-            )
+            raise FileNotFoundError(f"ML model not found at: {MODEL_PATH}")
 
         _model = joblib.load(MODEL_PATH)
 
@@ -35,14 +31,16 @@ def get_model():
 def predict(url: str):
     model = get_model()
 
-    # Extract features
     features = extract_features(url)
 
-    # Ensure correct shape
+    # 🚨 SAFETY CHECK
+    if len(features) != 14:
+        raise ValueError(f"Invalid feature length: {len(features)}")
+
     prediction = model.predict([features])[0]
     proba = model.predict_proba([features])[0]
 
-    confidence = proba[int(prediction)]
-    label = "phishing" if prediction == 1 else "legitimate"
+    label = "phishing" if int(prediction) == 1 else "legitimate"
+    confidence = float(proba[int(prediction)])
 
-    return label, round(float(confidence), 4)
+    return label, round(confidence, 4)
