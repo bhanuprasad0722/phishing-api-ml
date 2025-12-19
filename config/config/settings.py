@@ -43,9 +43,9 @@ SIMPLE_JWT = {
 SECRET_KEY = 'django-insecure-dc-adwc-k5u8f1+%3_^3w*y^96pu$2#@_p9&-(scm#2sq_wrin'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["phishing-api-ml-1.onrender.com"]
 CSRF_TRUSTED_ORIGINS = [
     "https://*.onrender.com"
 ]
