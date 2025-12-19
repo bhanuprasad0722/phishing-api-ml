@@ -12,9 +12,6 @@ db.sqlite3
 *.log
 staticfiles/
 
-# ML artifacts
-*.pkl
-ml/artifacts/
 
 # Tests
 .pytest_cache/
