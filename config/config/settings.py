@@ -16,10 +16,8 @@ from datetime import timedelta
 import sys
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parents[2]
-
-sys.path.insert(0, str(BASE_DIR))
-
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Something to write 
 REST_FRAMEWORK = {
@@ -35,8 +33,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME' : timedelta(days=1),
 }
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 
 # Quick-start development settings - unsuitable for production
