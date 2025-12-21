@@ -46,3 +46,48 @@ All dependencies are listed in `requirements.txt`.
    ```bash
    git clone https://github.com/bhanuprasad0722/phishing-api-ml.git
    cd phishing-api-ml
+
+2. **Create and activate a virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   
+4. **Apply Database Migrations**
+   ```bash
+   python config/manage.py migrate
+
+5. **Run the Development Server**
+   ```bash
+   python config/manage.py runserver
+
+## Production Deployment (Render.com)
+
+The API is currently deployed on Render.com using direct connection to this GitHub repository (not via Docker image).
+
+- Render automatically pulls from the main branch, installs dependencies, runs migrations, and starts Gunicorn.
+- Environment variables (e.g., SECRET_KEY, database config) should be set in the Render dashboard for security.
+- Allowed hosts and CSRF trusted origins are configured to support Render deployment.
+
+## API Endpoints
+### Authentication
+
+- Register New UserPOST /api/auth/register/JSON{
+  "username": "your_username",
+  "email": "your@email.com",
+  "password": "your_secure_password"
+}
+- Response:JSON{ "message": "User Registered Successfully" }
+- LoginPOST /api/auth/login/JSON{
+  "username": "your_username",
+  "password": "your_secure_password"
+}
+- Response:JSON{
+  "refresh": "jwt_refresh_token",
+  "access": "jwt_access_token"
+}
+- Refresh TokenPOST /api/auth/refresh/JSON
+  { "refresh": "your_refresh_token" }
