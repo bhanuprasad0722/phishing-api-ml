@@ -20,7 +20,7 @@ This is a **RESTful API** built with **Django** and **Django REST Framework** th
 
 The model uses URL characteristics such as length, special characters, HTTPS presence, suspicious keywords, subdomain count, and more to deliver accurate phishing detection.
 
-**Live API**: (Add your Render-deployed URL here, e.g., https://phishing-api-ml.onrender.com)
+**Live API**: https://phishing-api-ml-1.onrender.com
 
 ## Technologies Used
 
