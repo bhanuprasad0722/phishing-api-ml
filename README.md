@@ -75,13 +75,18 @@ The API is currently deployed on Render.com using direct connection to this GitH
 ## API Endpoints
 ### Authentication
 
-- Register New UserPOST /api/auth/register/JSON{
+**Register New User**
+```bash
+POST /api/auth/register/JSON{
   "username": "your_username",
   "email": "your@email.com",
   "password": "your_secure_password"
 }
-- Response:JSON{ "message": "User Registered Successfully" }
-- LoginPOST /api/auth/login/JSON{
+Response:JSON{ "message": "User Registered Successfully" }
+```
+**Login**
+```bash
+POST /api/auth/login/JSON{
   "username": "your_username",
   "password": "your_secure_password"
 }
@@ -89,5 +94,9 @@ The API is currently deployed on Render.com using direct connection to this GitH
   "refresh": "jwt_refresh_token",
   "access": "jwt_access_token"
 }
-- Refresh TokenPOST /api/auth/refresh/JSON
+```
+**Refresh Token**
+```bash
+POST /api/auth/refresh/JSON
   { "refresh": "your_refresh_token" }
+```
