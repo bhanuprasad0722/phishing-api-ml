@@ -90,7 +90,7 @@ POST /api/auth/login/JSON{
   "username": "your_username",
   "password": "your_secure_password"
 }
-- Response:JSON{
+Response:JSON{
   "refresh": "jwt_refresh_token",
   "access": "jwt_access_token"
 }
@@ -100,3 +100,71 @@ POST /api/auth/login/JSON{
 POST /api/auth/refresh/JSON
   { "refresh": "your_refresh_token" }
 ```
+## Prediction
+
+**Check if URL is Phishing**
+```bash
+POST /api/predictions/predict/
+Requires Authentication (Bearer Token in Authorization header)
+JSON{
+  "url": "https://example-suspicious-login.com"
+}
+Response:JSON{
+  "url": "https://example-suspicious-login.com",
+  "prediction": "phishing",   // or "legitimate"
+  "confidence": 0.97
+}
+```
+## Admin Panel
+- Access at /admin/ using superuser credentials to manage users and view full prediction history.
+
+## Machine Learning Model Details
+
+- Algorithm: Random Forest Classifier
+- Pre-trained Model: Located at **config/ml/artifacts/random_forest_model.pkl** (included in repo)
+- Feature Extraction: 14 URL-based features including:
+- URL length and depth
+- Count of dots, digits, hyphens, '@', etc.
+- Presence of HTTPS
+- Subdomain and path analysis
+- IP address in URL
+- Suspicious keywords (login, bank, secure, update, etc.)
+- Known URL shorteners
+- Presence of query parameters
+- Suspicious TLDs
+
+## Testing
+**Run the test suite locally:**
+```bash
+pytest config/
+```
+- Tests cover user registration, authentication, prediction endpoint, and model loading. Slow tests are marked and excluded by default in CI.
+
+## Project Structure
+.
+├── .github/workflows/ci.yml              # GitHub Actions CI (tests + Docker build)
+├── config/
+│   ├── manage.py
+│   ├── config/                           # Django settings, URLs, WSGI
+│   ├── users/                            # User registration app
+│   ├── predictions/                      # Core prediction logic, models, views
+│   └── ml/
+│       ├── feature_extraction.py         # All URL feature functions
+│       ├── train.py                      # Model training script
+│       └── artifacts/
+│           └── random_forest_model.pkl   # Pre-trained ML model
+├── Dockerfile                                # For local Docker testing
+├── build.sh                                  # Used in Docker build
+├── requirements.txt
+├── pytest.ini
+└── .gitignore
+
+## Contributing
+**Contributions are welcome!**
+- Fork the repository
+- Create a feature branch (git checkout -b feature/amazing-feature)
+- Commit your changes (git commit -m 'Add amazing feature')
+- Push to the branch (git push origin feature/amazing-feature)
+- Open a Pull Request
+
+**Built with ❤️ by @bhanuprasad0722**
